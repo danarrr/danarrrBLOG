@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <meta charset="utf-8"></meta>
+    <title>个人博客</title>
+</head>
+<h1>Danarrr的博客</h1>
+
+<div>
+	<p>请输入新增博客相关内容：</p></br>
+	标题：<input type="text" id="tit"></br>
+	作者：<input type="text" id="author"></br>
+	内容：<textarea id="article"></textarea></br>
+	<button id="addArticle">新增文章</button>
+</div>
+<div class="articleList" id="articleList"></div>
+<script src="http://code.jquery.com/jquery.js"></script>
+<!-- <script src="/javascripts/pageAjax.js"></script> -->
+<script>
+$(function() {
+    var baseUrl = '/';
+    var url = baseUrl + 'api/addArticle';
+
+    var articleList = document.getElementById('articleList');
+    $('#addArticle').click(function() {
+
+        let addArticleData= {
+            title:$("#tit").val(),
+            author:$("#author").val(),
+            article:$("#article").val(),
+            id:'12',
+        }
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data:  addArticleData,
+            success: function callbackFun(data) {
+                console.log(data)
+            }
+        });
+
+     // articleList.innerHTML('<div>${}</div>')
+    })
+
+})
+</script>
+
+<body></body>
+
+</html>
