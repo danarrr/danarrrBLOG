@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>个人博客</title>
+    <link href="../style/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<div id="bg-opa-black">
+    <div id="altbox">
+        <!-- <h5 >提示</h5> -->
+        <span></span></br>
+    </div >
+    <div id="textbox">
+
+    </div>
+</div>
+<div class="blog-pageidx">
+    <div class="container">
+        <h1 class="page-header "><p class="logo">DANBLOG<p>
+            <small>(mongodb+node+bootstrap)</small>
+        </h1>
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9 articlelist" id="articleList">
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+                <h3>个人信息</h3>
+                <image width="100%;" src="img/tx.jpg"> </image>
+               <!--  <p>请输入新增博客相关内容：</p>
+                </br>
+                标题：
+                <input type="text" id="tit">
+                </br>
+                作者：
+                <input type="text" id="author">
+                </br>
+                内容：
+                <textarea id="article"></textarea>
+                </br>
+                分类：
+                <textarea id="artiType"></textarea>
+                </br>
+                <button id="addArticle">新增文章</button>
+                <a href="./enter.html">跳轉到后臺錄入頁面</a> -->
+            </div>
+        </div>
+        <ul class="pagination" id="pagination">
+            <li><a href="#">&laquo;</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../js/commen.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</html>
+<script>
+$(function() {
+    var addAtceUrl = '/api/addArticle',
+        getListUrl = '/api/getArticleList'
+
+
+    function showArticleMain(){
+       _txtBox(event.path[3].outerHTML)
+    }
+    function getArticleList() {
+        $ajax(getListUrl, { usrname: 'danarrr' }, function(data) {
+            let datas = data.data
+            let articleListData = '';
+            datas.map((item, index) => {
+                let createTime = item.meta.createAt.substr('0', '10')
+                articleListData += `
+                        <div class="list">
+                            <h3 class="list-tit">${item.title}</h3>
+                            <div class="row">
+                                <div class="list-left col-sm-3 col-xs-12">
+                                    <span class="icon-time">${createTime}</span>
+                                    <span class="icon-type"> ${item.artiType}</span>
+                                    <span class="icon-read"> ${item.author}</span>
+                                </div>
+                                <div class="list-right col-sm-9 col-xs-12" id="showArticleMain">${item.article}</div>
+                            </div>
+                        </div>
+                    `
+            })
+            // $('#articleList').html(articleListData)
+             document.getElementById('articleList').innerHTML=articleListData
+            document.getElementById("showArticleMain").onclick = showArticleMain;
+        })
+    }
+    getArticleList( )
+
+
+})
+</script>

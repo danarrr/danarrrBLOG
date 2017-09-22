@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+body {
+    font-family: "Times New Roman", Times, serif;
+    color: #555;
+}
+
+
+
+
+/* 设备最大宽度960px */
+
+@media screen and (max-width: 960px) {
+    .blog-pageidx {
+        width: 100%;
+        background-color: #f7f7f7;
+    }
+}
+
+
+
+
+/* 宽度大于480px且小于768px */
+
+@media screen and (min-width: 480px) and (max-width:768px) {
+    .blog-pageidx {
+        width: 100%;
+        background-color: #f7f7f7;
+    }
+}
+
+
+
+
+/* 设备最小宽度480px */
+
+@media screen and (min-width:480px) {
+    .blog-pageidx {
+        width: 100%;
+        background-color: #f7f7f7;
+    }
+}
+
+@mixin img {
+    background: url(../img/img.png) no-repeat;
+}
+
+@mixin icon-read {
+    height: 16px;
+    background-position: 0 0 center;
+}
+
+@mixin icon-clock {
+    height: 16px;
+    background-position: 0 -16px;
+}
+
+@mixin icon-arttype {
+    height: 16px;
+    background-position: 0 -32px;
+    background-origin: border-box
+}
+
+@mixin mid_y {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+}
+
+@mixin mid {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#bg-opa-black {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 998;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    #altbox {
+        @include mid;
+        width: 200px;
+        background: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        display: none;
+    }
+    span {
+        display: block;
+        line-height: 28px;
+        font-weight: bolder
+    }
+    #textbox {
+        @include mid;
+        width:80%;
+        height:80%;
+        overflow-y:auto;
+        background: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+    }
+
+}
+
+.blog-pageidx {
+    .logo {
+        font-family: Montserrat, 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 30px;
+        letter-spacing: 8px;
+        text-transform: uppercase;
+        padding: 12px 0;
+        top: 0;
+        background-color: #f7f7f7;
+        z-index: 100;
+    }
+    .articlelist {
+        .list {
+            margin-bottom: 40px;
+            height: 240px;
+            overflow:hidden;
+            .list-left {
+                .icon-time {
+                    @include img;
+                    @include icon-clock;
+                }
+                .icon-read {
+                    @include img;
+                    @include icon-read;
+                }
+                .icon-type {
+                    @include img;
+                    @include icon-arttype;
+                }
+                span {
+                    padding-left: 20px;
+                    display: block;
+                    height: 28px;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+        .list .list-tit {
+            border-bottom: 1px dotted #aaa;
+            padding: 5px 0;
+        }
+    }
+}

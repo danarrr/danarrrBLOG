@@ -1,9 +1,10 @@
 const mongoose=require('mongoose')
 let BlogSchema=new mongoose.Schema({
-	title:String,
-	author:String,
+	title:String,//文章标题
+	author:String,//作者
 	article:String,
-	id:Number,
+	id:Number,//文章id
+	artiType:String,//文章分类
 	meta:{
 		createAt:{//新建时间
 			type:Date,
