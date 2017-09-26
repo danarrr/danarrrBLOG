@@ -8,97 +8,130 @@
     <link href="../style/style.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<div id="bg-opa-black">
-    <div id="altbox">
-        <!-- <h5 >提示</h5> -->
-        <span></span></br>
-    </div >
-    <div id="textbox">
-
+<div id="bgBasis">
+    <div id="articleListBox">
+        <a href="#" class="btn-close"><span class="glyphicon glyphicon-remove"></span>
+    </a>
     </div>
 </div>
 <div class="blog-pageidx">
-    <div class="container">
-        <h1 class="page-header "><p class="logo">DANBLOG<p>
-            <small>(mongodb+node+bootstrap)</small>
+    <div class="top ">
+        <h1><span class="logo ">DANBLOG</span>
+         <small>(mongodb+node+bootstrap)</small>
         </h1>
+    </div>
+    <div class="container">
         <div class="row">
             <div class="col-sm-9 col-md-9 col-lg-9 articlelist" id="articleList">
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <h3>个人信息</h3>
                 <image width="100%;" src="img/tx.jpg"> </image>
-               <!--  <p>请输入新增博客相关内容：</p>
-                </br>
-                标题：
-                <input type="text" id="tit">
-                </br>
-                作者：
-                <input type="text" id="author">
-                </br>
-                内容：
-                <textarea id="article"></textarea>
-                </br>
-                分类：
-                <textarea id="artiType"></textarea>
-                </br>
-                <button id="addArticle">新增文章</button>
-                <a href="./enter.html">跳轉到后臺錄入頁面</a> -->
             </div>
         </div>
-        <ul class="pagination" id="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>
     </div>
 </div>
-
+<!--页码组件-->
+<div class="pageBottomDiv hidden-xs">
+    <div id="pageBtn"></div>
+</div>
 </body>
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="../js/commen.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery.page.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/clearUtil.js"></script>
 
 </html>
 <script>
 $(function() {
-    var addAtceUrl = '/api/addArticle',
-        getListUrl = '/api/getArticleList'
+    let addAtceUrl = '/api/addArticle',
+        getListUrl = '/api/getArticleList',
+        articleList,
+        pi = 1;
 
-
-    function showArticleMain(){
-       _txtBox(event.path[3].outerHTML)
+    const showArticleListBox = (tit, text) => {
+        let $bg = $("#bgBasis"),
+            $articleListBox = $("#articleListBox");
+        articleListTxt = `
+                <div>
+                    <h2 style="color:#337abc">${tit}</h2>
+                    ${text}
+                </div>
+                <h2 style="color:#337abc">留言</h2>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">大名：</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">电子邮箱：</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+                        </div>
+                    </div>
+                    <p><a type="button" class="btn btn-primary"  id="addArticle" href="#">发表</a></p>
+                </form>
+            `
+        $articleListBox.html(articleListTxt);
+        $bg.fadeIn();
+        $articleListBox.fadeIn()
     }
-    function getArticleList() {
-        $ajax(getListUrl, { usrname: 'danarrr' }, function(data) {
+    const getArticleList = (page) => {
+        $ajax(getListUrl, { usrname: 'danarrr', page: page, pageNum: 4 }, function(data) {
             let datas = data.data
+            articleList = data.data
             let articleListData = '';
             datas.map((item, index) => {
                 let createTime = item.meta.createAt.substr('0', '10')
+                // let article = clearUtil.clearXMLTags(item.article)
+                let article = item.article
                 articleListData += `
                         <div class="list">
-                            <h3 class="list-tit">${item.title}</h3>
+                            <h3 class="list-tit"  data-index=${index} >${item.title}</h3>
                             <div class="row">
                                 <div class="list-left col-sm-3 col-xs-12">
-                                    <span class="icon-time">${createTime}</span>
+                                    <span class="icon-time" >${createTime}</span>
                                     <span class="icon-type"> ${item.artiType}</span>
                                     <span class="icon-read"> ${item.author}</span>
                                 </div>
-                                <div class="list-right col-sm-9 col-xs-12" id="showArticleMain">${item.article}</div>
+                                <div class="list-right col-sm-9 col-xs-12 showArticleMain" >${article}</div>
                             </div>
                         </div>
                     `
             })
-            // $('#articleList').html(articleListData)
-             document.getElementById('articleList').innerHTML=articleListData
-            document.getElementById("showArticleMain").onclick = showArticleMain;
+
+            document.getElementById('articleList').innerHTML = articleListData
+            $("#pageBtn").createPage({
+                pageCount: data.total, //总页码
+                current: pi, //当前页
+                backFn: function(p) {
+                    pi = p;
+                    getArticleList(pi);
+                }
+            });
         })
     }
-    getArticleList( )
+
+    getArticleList(pi)
+
+    $(document).on('click', '.list-tit', (e) => {
+        let idx = e.target.dataset.index,
+            item = articleList[idx];
+        showArticleListBox(item.title, item.article)
+    });
+    //animate 判断滚动条距离顶部位置
+    window.addEventListener('scroll', () => {
+        var yheight = window.pageYOffset;
+        if (yheight > 180) {
+            // $(".logo").css({'display':'inline-block','transition':'display  5s '})
+            $(".logo").css({ 'display': 'inline-block', 'transition': 'display  5s ' })
+        } else {
+            $(".logo").css({ 'display': 'block', 'transition': 'display  5s ' })
+        }
+    })
 
 
 })

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>后台文章列表页</title>
+    <link href="../style/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<div class="blog-enterlist">
+    <div class="container">
+        <h1 class="page-header "><p class="logo">后台文章列表页<p>
+        </h1>
+        <p><a type="button" class="btn btn-primary"  id="addArticle" href="#">新增文章</a></p>
+        <div id="enterList">
+
+            <table class="table table-hover ">
+                <thead class="bg-primary">
+                    <tr>
+                        <th>作者</th>
+                        <th>文章类型</th>
+                        <th>标题</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--页码组件-->
+<div class="pageBottomDiv hidden-xs">
+    <div id="pageBtn"></div>
+</div>
+</body>
+<script src="../js/jquery.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/jquery.page.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</html>
+<script>
+$(function() {
+    let getEnterListUrl = '/api/getArticleList',removerArticle='/api/removeArticle',pi = 1;
+
+    $("#addArticle").click(()=>{
+        sessionStorage["articleID"]=''
+        window.location.href='enter.html'
+    })
+
+    function getArticleList(page) {
+        $ajax(getEnterListUrl, { usrname: 'danarrr', page: page, pageNum: 10}, (data)=> {
+            let datas = data.data
+            let articleListData = '';
+            datas.map((item, index) => {
+                let updatetime= item.meta.updateAt.substr('0', '10')
+                articleListData += `
+                    <tr>
+                        <td>${item.author}</td>
+                        <td>${item.artiType}</td>
+                        <td>${item.title}</td>
+                        <td>${updatetime}</td>
+                        <td id="edit" ><a data-articleid=${item._id}>修改</a></td>
+                        <td id="remove" ><a data-articleid=${item._id}>删除</a></td>
+                    </tr>
+                `
+            })
+
+            $('#enterList>table>tbody').html(articleListData)
+
+            $("#pageBtn").createPage({
+                pageCount: data.total, //总页码
+                current: pi, //当前页
+                backFn: function(p) {
+                    pi = p;
+                    getArticleList(pi)
+                }
+            });
+        })
+    }
+    getArticleList(pi)
+
+    $(document).on('click', '#edit', (e) =>{
+        let articleid=e.target.dataset.articleid;
+        window.location.href="enter.html";
+        sessionStorage["articleID"]=articleid;
+    });
+    $(document).on('click', '#remove',(e)=> {
+        let articleid=e.target.dataset.articleid;
+        $ajax(removerArticle, { id: articleid}, (data)=> {
+           if(data.success){
+            _altBox('删除成功！')
+            getArticleList(1)
+           }
+        })
+
+    });
+
+})
+</script>

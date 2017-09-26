@@ -3,17 +3,11 @@
 
 <head>
     <meta charset="utf-8"></meta>
-    <meta name="viewport" content="width=device-width; initial-scale=1.0"></meta>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"></meta>
     <title>个人博客</title>
     <link href="../style/style.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<div id="bg-opa-black">
-    <div id="altbox">
-        <h5 >提示</h5>
-        <span></span></br>
-    </div>
-</div>
 <div class="blog-pageenter">
     <div class="container">
         <h1 class="page-header "><p class="logo">后台录入頁<p>
@@ -36,44 +30,71 @@
                         <option>其他</option>
                     </select>
                 </div>
-                 <div class="form-group  col-xs-12 col-md-12"" >
-                  <a href="http://mahua.jser.me/">  markdown编辑器新增文章</a>
-               <!--  <label class="sr-only" for="inputfile" >文件输入</label>
-                <input type="file" id="inputfile"  id="article" > -->
+                <div class="form-group  col-xs-12 col-md-12" " >
+                  <a href="https://www.zybuluo.com ">  markdown编辑器新增文章</a>
+               <!--  <label class="sr-only " for="inputfile " >文件输入</label>
+                <input type="file " id="inputfile "  id="article " > -->
               </div>
-                <div class="form-group  col-xs-12 col-md-12" >
-                    <label for="name">正文：</label>
-                    <textarea class="form-control" rows="3" id="article" ></textarea>
+                <div class="form-group col-xs-12 col-md-12 " >
+                    <label for="name ">正文：</label>
+                    <textarea class="form-control " rows="3 " id="article" ></textarea>
                 </div>
                 </br>
-                  <div class="form-group  col-xs-12 col-md-12"" >
-                <button type="button" class="btn btn-primary"  id="addArticle">新增文章</button>
-            </div>
+                  <div class="form-group col-xs-12 col-md-12 " id="addBtn">
+                  <!--   <button type="button" class="btn btn-primary" id="addArticle">新增文章</button> -->
+<!--                     <button type="button" class="btn btn-primary" id="editArticle">修改文章</a> -->
+                </div>
             </div>
         </div>
     </div>
 </div>
 </body>
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="../js/commen.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/common.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </html>
 <script>
 $(function() {
-    var addAtceUrl = '/api/addArticle',
-        getListUrl = '/api/getArticleList'
-    $('#addArticle').click(() => {
-        let addArticleData = {
-            title: $("#tit").val(),
-            article: $("#article").val(),
-            artiType: $("#artiType").val(),
-            author:'李晓丹'
-        }
-        $ajax(addAtceUrl, addArticleData, (data) => {
-            _altBox( '博文添加成功！')
-        }, 'POST')
-    })
+    let getListUrl = '/api/getArticleList',
+        url =sessionStorage["articleID"]? '/api/editArticle':'/api/addArticle',
+        setBtn=sessionStorage["articleID"]?'修改':'新增'
+        $("#addBtn").html(`<button type='button' class='btn btn-primary' id='operaArticle'>${setBtn}文章</button>`)
 
+    let getList=()=>{
+        $ajax(getListUrl, { id: sessionStorage["articleID"],  }, (data)=>{
+
+            let res=data.data[0];
+            $("#tit").val(res.title);
+            $("#article").val(res.article);
+            $("#artiType").val(res.artiType);
+        })
+    }
+
+    $('#operaArticle').click(() => {
+        if ($("#tit").val() && $("#article").val() && $("#artiType").val()){
+            let articleData =!sessionStorage["articleID"]? {
+                title: $("#tit").val(),
+                article: $("#article").val(),
+                artiType: $("#artiType").val(),
+                author: '李晓丹'
+            }:{
+                title: $("#tit").val(),
+                article: $("#article").val(),
+                artiType: $("#artiType").val(),
+                id:sessionStorage["articleID"]
+            }
+            $ajax(url, articleData, (data) => {
+                _altBox('博文'+setBtn+'成功！',()=>{
+                    window.location.href='enterlist.html'
+                })
+            }, 'GET')
+        }else{
+            _altBox('请完整填写博文内容！')
+        }
+    })
+    if(sessionStorage["articleID"]){
+        getList()
+    }
 })
 </script>
