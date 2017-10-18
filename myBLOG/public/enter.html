@@ -51,13 +51,14 @@
 </body>
 <script src="../js/jquery.js"></script>
 <script src="../js/common.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/clearUtil.js"></script>
 </html>
 <script>
 $(function() {
     let getListUrl = '/api/getArticleList',
         url =sessionStorage["articleID"]? '/api/editArticle':'/api/addArticle',
+        type=sessionStorage["articleID"]?'get':'post'
         setBtn=sessionStorage["articleID"]?'修改':'新增'
         $("#addBtn").html(`<button type='button' class='btn btn-primary' id='operaArticle'>${setBtn}文章</button>`)
 
@@ -72,15 +73,19 @@ $(function() {
     }
 
     $('#operaArticle').click(() => {
+        console.log(clearUtil.clearXMLTags($("#article").val()).substr(0, 200))
         if ($("#tit").val() && $("#article").val() && $("#artiType").val()){
             let articleData =!sessionStorage["articleID"]? {
                 title: $("#tit").val(),
                 article: $("#article").val(),
+                articleShort:clearUtil.clearXMLTags($("#article").val()).substr(0, 200),
                 artiType: $("#artiType").val(),
-                author: '李晓丹'
+                author: '李晓丹',
+
             }:{
                 title: $("#tit").val(),
                 article: $("#article").val(),
+                articleShort:clearUtil.clearXMLTags($("#article").val()).substr(0, 200),
                 artiType: $("#artiType").val(),
                 id:sessionStorage["articleID"]
             }
@@ -88,7 +93,7 @@ $(function() {
                 _altBox('博文'+setBtn+'成功！',()=>{
                     window.location.href='enterlist.html'
                 })
-            }, 'GET')
+            }, type)
         }else{
             _altBox('请完整填写博文内容！')
         }

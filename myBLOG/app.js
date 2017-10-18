@@ -6,7 +6,7 @@ let express = require('express'),
     app = express();
 
 app.use('/', express.static(path.join(__dirname + '/public'))); //视图目录
-app.set('port',(process.env.port || 3000))//设置端口
+app.set('port',(process.env.port || 3800))//设置端口
 
 app.use(bodyParser.json());//有表单提交时，对表单数据格式化
 app.use(bodyParser.urlencoded({extended: true}));

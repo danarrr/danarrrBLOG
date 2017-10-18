@@ -1,10 +1,16 @@
 const mongoose=require('mongoose')
+let comment = new mongoose.Schema({
+	name:String,
+	email:String,
+	txt:String
+})
 let BlogSchema=new mongoose.Schema({
 	title:String,//文章标题
 	author:String,//作者
 	article:String,
 	id:Number,//文章id
 	artiType:String,//文章分类
+	articleShort:String,
 	meta:{
 		createAt:{//新建时间
 			type:Date,
@@ -14,7 +20,8 @@ let BlogSchema=new mongoose.Schema({
 			type:Date,
 			default:Date.now()
 		},
-	}
+	},
+	comment:[comment],//评论
 })
 
 BlogSchema.pre('save',function(next){//每次数据存储之前都会调用这个方法
@@ -38,4 +45,7 @@ BlogSchema.statics={
 			exec(cb)
 	}
 }
+
+
 module.exports=BlogSchema//导出模块
+

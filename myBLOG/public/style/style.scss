@@ -7,36 +7,7 @@ body {
     background-color: #f7f7f7;
 }
 
-
-/* 设备最大宽度960px */
-
-@media screen and (max-width: 960px) {
-    .blog-pageidx,.blog-pageidx {
-        width: 100%;
-        background-color: #f7f7f7;
-    }
-}
-
-
-/* 宽度大于480px且小于768px */
-
-@media screen and (min-width: 480px) and (max-width:768px) {
-    .blog-pageidx,.blog-pageidx {
-        width: 100%;
-        background-color: #f7f7f7;
-    }
-}
-
-
-/* 设备最小宽度480px */
-
-@media screen and (min-width:480px) {
-    .blog-pageidx,.blog-pageidx {
-        width: 100%;
-        background-color: #f7f7f7;
-    }
-}
-
+code{overflow-x:scroll}
 
 
 /*居中*/
@@ -62,6 +33,38 @@ body {
     transform: translate(-50%, -50%);
 }
 
+@mixin set_mid_y($h) {
+    position: absolute;
+    top: 50%;
+    margin-top: -$h;
+}
+
+
+
+
+/*旋转*/
+
+@mixin rotate($deg, $y) {
+    /* Rotate div */
+    transform: translateY($y) rotate($deg);
+    -ms-transform: translateY($y) rotate($deg);
+    /* Internet Explorer */
+    -moz-transform: translateY($y) rotate($deg);
+    /* Firefox */
+    -webkit-transform: translateY($y) rotate($deg);
+    /* Safari 和 Chrome */
+    -o-transform: translateY($y) rotate($deg);
+    /* Opera */
+}
+
+@mixin transition($t) {
+    -webkit-transition: all $t ease;
+    -moz-transition: all $t ease;
+    -ms-transition: all $t ease;
+    -o-transition: all $t ease;
+    transition: all $t ease;
+}
+
 @mixin img {
     background: url(../img/img.png) no-repeat;
 }
@@ -83,38 +86,7 @@ body {
 }
 
 
-/*分页*/
-
-.pageBottomDiv {
-    text-align: center;
-    padding: 20px 0;
-    background-color: #f7f7f7;
-}
-
-.pageBottomDiv a,
-.pageBottomDiv span {
-    height: 33px;
-    padding: 0 16px;
-    border: solid #e5e5e5 1px;
-    font-size: 16px;
-    color: #333333;
-    background-color: #fff;
-    display: inline-block;
-    line-height: 33px;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-
-.pageBottomDiv span.current {
-    background-color: #337abc;
-    color: #fff;
-    border: solid 1px #337abc;
-}
-
-.pageBottomDiv #pageBtn {
-    display: inline-block;
-}
-
+/*弹框*/
 
 #bgBasis {
     width: 100%;
@@ -148,6 +120,11 @@ body {
         border-radius: 5px;
         padding: 20px;
         text-align: left;
+        font-size:.14rem;
+        .h2{
+            font-size:.3rem;
+            color:#337abc
+        }
     }
 
     .btn-close {
@@ -159,78 +136,232 @@ body {
     }
 }
 
+
+
+
+/*PC分页*/
+
+.pageBottomDiv {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f7f7f7;
+}
+
+.pageBottomDiv a,
+.pageBottomDiv span {
+    height: 33px;
+    padding: 0 16px;
+    border: solid #e5e5e5 1px;
+    font-size: 16px;
+    color: #333333;
+    background-color: #fff;
+    display: inline-block;
+    line-height: 33px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.pageBottomDiv span.current {
+    background-color: #337abc;
+    color: #fff;
+    border: solid 1px #337abc;
+}
+
+.pageBottomDiv #pageBtn {
+    display: inline-block;
+}
+
+
+
+
+
+
+
+
+/* 设备最大宽度960px */
+
+@media screen and (max-width: 960px) {
+    .blog-pageidx,
+    .blog-pageidx {
+        width: 100%;
+        background-color: #f7f7f7;
+    }
+}
+
+
+
+
+/* 宽度大于480px且小于768px */
+
+@media screen and (min-width: 480px) and (max-width:768px) {
+    .blog-pageidx,
+    .blog-pageidx {
+        width: 100%;
+        background-color: #f7f7f7;
+    }
+}
+
+
+
+
+
+
+
+
+
 .blog-pageidx {
+    .phone-userinfo {
+        width: 100%;
+        display: none;
+        position: fixed;
+        margin-top: .5rem;
+        background: rgba(0, 0, 0, 0.8);
+        padding: .5rem;
+        text-align: center;
+        color: #fff;
+        z-index: 99;
+    }
     .top {
         position: fixed;
         top: 0;
         z-index: 888;
         width: 100%;
         background: #f7f7f7;
-        padding: 20px 40px;
+        padding: 0.2rem 0.4rem;
         box-sizing: border-box;
         border-bottom: 1px solid #cecece;
+
         h1 {
             margin: 0
+        }
+        small {
+            font-size: 0.28rem;
         }
         .logo {
             font-family: Montserrat, 'Helvetica Neue', Arial, sans-serif;
             font-weight: 700;
-            font-size: 30px;
-            letter-spacing: 8px;
+            font-size: .3rem;
+            letter-spacing: .08rem;
             text-transform: uppercase;
             top: 0;
             background-color: #f7f7f7;
             z-index: 100;
             display: block;
-
         }
-          // small {
-
-          //       transition: transform 2s;
-          //       -moz-transition: transform 2s/* Firefox 4 */
-          //       -webkit-transition:transform 2s/* Safari and Chrome */
-          //       -o-transition:transform 2s/* Opera */
-          //   }
+        .animate-usrinfo {
+            width: 0.4rem;
+            height: 0.08rem;
+            background-color: #337abc;
+            @include set_mid_y(.04rem);
+            position: absolute;
+            right: 0;
+            margin-right: .3rem;
+            display: block;
+        }
+        .animate-usrinfo:before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: .08rem;
+            background-color: #337abc;
+            position: relative;
+            top: -.15rem;
+            @include transition(.4s);
+        }
+        .animate-usrinfo:after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: .08rem;
+            background-color: #337abc;
+            margin-top: .05rem;
+            @include transition(.4s);
+        }
+        .active {
+            background-color: #fff;
+        }
+        .active:before {
+            @include rotate(45deg, .1rem);
+        }
+        .active:after {
+            @include rotate(-45deg, -.2rem);
+        }
     }
     .container {
-        padding-top: 130px;
-    }
-    .articlelist {
-        .list {
-            margin-bottom: 40px;
-            height: 200px;
-            overflow: hidden;
-            display: block;
-            .list-left {
-                .icon-time {
-                    @include img;
-                    @include icon-clock;
+        padding-top: 1.3rem;
+        .articlelist {
+            .list {
+                margin-bottom: .2rem;
+                height: 3.5rem;
+                overflow: hidden;
+                display: block;
+                .list-tit {
+                    border-bottom: 1px dotted #aaa;
+                    padding: 0.05rem 0;
+                    cursor: pointer;
+                    font-size: 0.4rem;
                 }
-                .icon-read {
-                    @include img;
-                    @include icon-read;
+                .list-tit:hover {
+                    color: #337abc
                 }
-                .icon-type {
-                    @include img;
-                    @include icon-arttype;
+                .list-left {
+                    font-size: .24rem;
+                    .icon-time {
+                        @include img;
+                        @include icon-clock;
+                    }
+                    .icon-read {
+                        @include img;
+                        @include icon-read;
+                    }
+                    .icon-type {
+                        @include img;
+                        @include icon-arttype;
+                    }
+                    span {
+                        width:30%;
+                        padding-left: 20px;
+                        display: inline-block;
+                        height: 28px;
+                        margin-bottom: 10px;
+                    }
                 }
-                span {
-                    padding-left: 20px;
-                    display: block;
-                    height: 28px;
-                    margin-bottom: 10px;
-                }
-            } // .list-right{
-            //     height:200px;
-            //     display:inline-block;
-            //     word-wrap:break-word;
-            //     overflow:hidden;
-            //     text-overflow:ellipsis;
-            // }
+            }
         }
-        .list .list-tit {
-            border-bottom: 1px dotted #aaa;
-            padding: 5px 0;
+
+    }
+}
+
+/* 设备最小宽度480px */
+
+@media screen and (min-width:480px) {
+    .blog-pageidx {
+        width: 100%;
+        background-color: #f7f7f7;
+        .top {
+            padding: 20px 40px;
+            .logo {
+                font-size: 30px;
+                letter-spacing: 8px;
+            }
+        }
+        .container {
+            padding-top: 130px;
+            .articlelist {
+                .list {
+                     margin-bottom:20px;
+                     height: 200px;
+                    .list-tit {
+                        font-size: 24px;
+                        padding:5px 0;
+                    }
+                    .list-left {
+                        font-size: 13px;
+                        span{width:100%;}
+                    }
+                }
+            }
         }
     }
 }
+
