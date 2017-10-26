@@ -1,6 +1,6 @@
 //跨域请求
-// var contentType ="application/x-www-form-urlencoded; charset=utf-8";
-// if(window.XDomainRequest)contentType = "text/plain";
+var contentType ="application/x-www-form-urlencoded; charset=utf-8";
+if(window.XDomainRequest)contentType = "text/plain";
 let $ajax=(url, data, fun, type)=>{
     if (!type) type = 'get';
     $.ajax({
@@ -8,7 +8,7 @@ let $ajax=(url, data, fun, type)=>{
         data: data,
         type: type,
         dataType: "json",
-        // contentType:contentType,
+        contentType:contentType,//304返回码
         success: function(data) {
             fun(data);
         },
